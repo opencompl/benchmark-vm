@@ -2,20 +2,38 @@
 
 import tempfile
 import os
+import platform
 import datetime
 from termcolor import colored
 
 
 
-gitcache = "GIT_ALTERNATE_OBJECT_DIRECTORIES=~/.gitcache/llvm-project.git/objects"
+gitcache = "GIT_ALTERNATE_OBJECT_DIRECTORIES=~/.gitcache/llvm-project.git/objects:~/.gitcache/mathlib4.git/objects"
+
+def machineinfo():
+    print(colored("Hostname",  attrs=["bold"]))
+    os.system("hostname")
+    print(colored("CPU",  attrs=["bold"]))
+    os.system("lscpu | grep -E '^Thread|^Core|^Socket|^CPU\('")
+    os.system("cat /proc/cpuinfo| grep 'model name'| head -n 1")
+    print(colored("Memory",  attrs=["bold"]))
+    mem_bytes = os.sysconf('SC_PAGE_SIZE') * os.sysconf('SC_PHYS_PAGES')  # e.g. 4015976448
+    mem_gib = mem_bytes/(1024.**3)  # e.g. 3.74
+    print(str(mem_gib) + "GB")
+    print(colored("Working Directory",  attrs=["bold"]))
+    os.system("pwd")
 
 
 def benchmark(directory):
     commands = [
+        f"cd {directory.name}; git clone git@github.com:llvm/llvm-project.git",
         f"cd {directory.name}; {gitcache} git clone git@github.com:llvm/llvm-project.git",
         f"cd {directory.name}/llvm-project; mkdir build; cd build; cmake -G Ninja -DCMAKE_BUILD_TYPE=Release ../llvm",
         f"cd {directory.name}/llvm-project/build; ninja",
-        f"cd {directory.name}; {gitcache} git clone git@github.com:llvm/llvm-project.git",
+
+        f"cd {directory.name}; git clone git@github.com:leanprover-community/mathlib4.git",
+        f"cd {directory.name}; {gitcache} git clone git@github.com:leanprover-community/mathlib4.git",
+        f"cd {directory.name}/mathlib4; lake build",
     ]
 
     times = []
@@ -29,9 +47,10 @@ def benchmark(directory):
         print(delta)
 
     for x in zip(commands, times):
-        print("\033[1m" + colored(x[0], 'blue') + "\033[0m")
+        print(colored(x[0], attrs=["bold"]))
         print("\t"+ str(x[1]))
 
 temp_dir = tempfile.TemporaryDirectory()
 
 benchmark(temp_dir)
+machineinfo()
