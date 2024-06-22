@@ -49,7 +49,7 @@ def benchmark(directory):
         print(colored(x[0], attrs=["bold"]))
         print("\t"+ str(x[1]))
 
-temp_dir = tempfile.TemporaryDirectory()
+temp_dir = tempfile.TemporaryDirectory(dir="/dev/shm")
 
 benchmark(temp_dir)
 machineinfo()
