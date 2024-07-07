@@ -46,12 +46,15 @@ def benchmark(directory):
         delta = end-start
         times.append(delta)
         print(delta)
+    return (commands, time)
 
+def print_benchmark(commands, times)
     for x in zip(commands, times):
         print(colored(x[0], attrs=["bold"]))
         print("\t"+ str(x[1]))
 
 temp_dir = tempfile.TemporaryDirectory(dir="/dev/shm")
 
-benchmark(temp_dir)
+commands, times = benchmark(temp_dir)
 machineinfo()
+print_benchmark(commands, times)
