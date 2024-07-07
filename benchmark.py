@@ -48,7 +48,7 @@ def benchmark(directory):
         print(delta)
     return (commands, time)
 
-def print_benchmark(commands, times)
+def print_benchmark(commands, times):
     for x in zip(commands, times):
         print(colored(x[0], attrs=["bold"]))
         print("\t"+ str(x[1]))
