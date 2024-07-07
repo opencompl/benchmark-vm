@@ -46,7 +46,7 @@ def benchmark(directory):
         delta = end-start
         times.append(delta)
         print(delta)
-    return (commands, time)
+    return (commands, times)
 
 def print_benchmark(commands, times):
     for x in zip(commands, times):
