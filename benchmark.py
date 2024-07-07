@@ -26,7 +26,7 @@ def machineinfo():
 def benchmark(directory):
     commands = [
         f"cd {directory.name}; {gitcacheScratch} git clone git@github.com:llvm/llvm-project.git; git checkout llvmorg-18.1.8",
-        f"cd {directory.name}/llvm-project; mkdir build; cd build; cmake -G Ninja -DCMAKE_BUILD_TYPE=Release ../llvm",
+        f"cd {directory.name}/llvm-project; mkdir build; cd build; CC=clang-18 CXX=clang++-18 cmake -G Ninja -DCMAKE_BUILD_TYPE=Release ../llvm",
         f"cd {directory.name}/llvm-project/build; ninja",
 
         #f"cd {directory.name}; {gitcache} git clone git@github.com:leanprover-community/mathlib4.git",
