@@ -47,7 +47,7 @@ def benchmark(directory):
 def print_benchmark(commands, times):
     for x in zip(commands, times):
         print(colored(x[0], attrs=["bold"]))
-        print("\t"+ str(x[1]))
+        print("\t"+ str(x[1])[0:7])
 
 temp_dir = tempfile.TemporaryDirectory(dir="/dev/shm")
 
