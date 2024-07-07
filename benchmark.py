@@ -13,17 +13,14 @@ gitcacheScratch = "GIT_ALTERNATE_OBJECT_DIRECTORIES=/local/scratch/compilers/llv
 gitcacheNFS = "GIT_ALTERNATE_OBJECT_DIRECTORIES=/auto/groups/compilers/llvm-project.git/objects"
 
 def machineinfo():
-    print(colored("Hostname",  attrs=["bold"]))
-    os.system("hostname")
-    print(colored("CPU",  attrs=["bold"]))
-    os.system("lscpu | grep -E '^Thread|^Core|^Socket|^CPU\('")
-    os.system("cat /proc/cpuinfo| grep 'model name'| head -n 1")
-    print(colored("Memory",  attrs=["bold"]))
+    hostname = os.popen('hostname').read()[:-1]
     mem_bytes = os.sysconf('SC_PAGE_SIZE') * os.sysconf('SC_PHYS_PAGES')  # e.g. 4015976448
-    mem_gib = mem_bytes/(1024.**3)  # e.g. 3.74
-    print(str(mem_gib) + "GB")
-    print(colored("Working Directory",  attrs=["bold"]))
-    os.system("pwd")
+    mem_gib = round(mem_bytes/(1024.**3))  # e.g. 3.74
+    cpu_model = os.popen("cat /proc/cpuinfo| grep 'model name'| head -n 1").read()[13:-1]
+    print(colored("# " + hostname,  attrs=["bold"]))
+    os.system("lscpu | grep -E '^Thread|^Core|^Socket|^CPU\('")
+    print("Model: " + cpu_model)
+    print("Memory: " + str(mem_gib) + "GB")
 
 
 def benchmark(directory):
