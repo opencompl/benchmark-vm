@@ -31,7 +31,6 @@ def benchmark(directory):
 
         #f"cd {directory.name}; {gitcache} git clone git@github.com:leanprover-community/mathlib4.git",
         #f"cd {directory.name}/mathlib4; lake build",
-        f"rm -rf {directory.name}",
     ]
 
     times = []
